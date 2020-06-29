@@ -9,6 +9,6 @@ import Header from '../../components/header/index';
 describe('<Header/>', ()=> {
     it('Is the header exsits ?', () =>{
         let head = shallow(<Header/>);
-        expect(app.find('h1').exists()).toBeTruthy();
+        expect(head.find('h1').exists()).toBeTruthy();
     });
 })

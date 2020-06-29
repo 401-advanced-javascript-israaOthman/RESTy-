@@ -6,7 +6,7 @@ import Footer from '../../components/footer/index.js';
 
 describe('<Footer/>', ()=> {
     it('Is the header exsits ?', () =>{
-        let head = shallow(<Footer/>);
+        let app = shallow(<Footer/>);
         expect(app.find('footer').exists()).toBeTruthy();
     });
 });

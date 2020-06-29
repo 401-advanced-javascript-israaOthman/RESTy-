@@ -25,10 +25,10 @@ describe('<Form />' , ()=>{
      let app = mount(<Form/>);
      let input = app.find('input');
      let method = app.find('#get');
-     let button = app.find('button');
+     let submit = app.find('form');
      input.simulate('change',{target:{value:'https://api/v1/my-api'}});
      method.simulate('click');
-     button.simulate('submit');
+     submit.simulate('submit');
      expect(app.state('method')).toEqual('');
      expect(app.state('url')).toEqual('');
    });
