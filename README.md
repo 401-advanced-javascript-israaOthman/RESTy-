@@ -11,3 +11,7 @@
 
 ## UML 
  ![restyUML](./assets/restyUML.jpeg)
+
+## Deployment 
+ - [gh-pages](https://401-advanced-javascript-israaothman.github.io/RESTy-/)
+ - [Netlify](https://adoring-pike-2234f9.netlify.app/)
