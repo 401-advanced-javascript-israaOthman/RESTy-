@@ -1,49 +1,42 @@
 import React from 'react';
+import ReactView from 'react-json-view';
 
 import './form.scss';
 
 class Form extends React.Component {
-
-  constructor(props) {
+  constructor(props){
     super(props);
-    this.state = {
-      url: '',
-      method: '',
-      request: {},
-    };
-  }
-
-  handleSubmit = e => {
-    e.preventDefault();
-
-    if ( this.state.url && this.state.method ) {
-      let request = {
-        url: this.state.url,
-        method: this.state.method,
-      };
-
-      let url = '';
-      let method = '';
-
-      this.setState({request, url, method});
-      e.target.reset();
-
-    }
-
-    else {
-      alert('missing information');
+    this.state={
+      url:'',
+      method:''
     }
   }
 
-  handleChangeURL = e => {
-    const url = e.target.value;
-    this.setState({url});
-  };
+handleSubmit = async e =>{
+  e.preventDefault(); 
 
-  handleChangeMethod = e => {
-    const method = e.target.id;
-    this.setState({ method });
-  };
+  if ( this.state.url && this.state.method ) {
+    let data = await (await fetch(this.state.url)).json;
+    let count = data.count;
+    let headers = { 'Content-Type': 'application/json' }
+    let results = data.results;
+    console.log('data',data)
+
+    this.props.handler(count,headers,results);
+}    else {
+  alert('missing information');
+}
+}
+
+handleChangeURL = e => {
+  const url = e.target.value;
+  this.setState({url});
+};
+
+handleChangeMethod = e => {
+  const method = e.target.id;
+  this.setState({ method });
+};
 
   render() {
     return (
@@ -56,15 +49,11 @@ class Form extends React.Component {
           </label>
           <label className="methods">
             <span className={this.state.method === 'get' ? 'active' : ''} id="get" onClick={this.handleChangeMethod}>GET</span>
-            <span className={this.state.method === 'post' ? 'active' : ''} id="post" onClick={this.handleChangeMethod}>POST</span>
-            <span className={this.state.method === 'put' ? 'active' : ''} id="put" onClick={this.handleChangeMethod}>PUT</span>
-            <span className={this.state.method === 'delete' ? 'active' : ''} id="delete" onClick={this.handleChangeMethod}>DELETE</span>
+            <span className={this.state.method  === 'post' ? 'active' : ''} id="post" onClick={this.handleChangeMethod}>POST</span>
+            <span className={this.state.method  === 'put' ? 'active' : ''} id="put" onClick={this.handleChangeMethod}>PUT</span>
+            <span className={this.state.method  === 'delete' ? 'active' : ''} id="delete" onClick={this.handleChangeMethod}>DELETE</span>
           </label>
         </form>
-        <section className="results">
-          <span className="method">{this.state.request.method}</span>
-          <span className="url">{this.state.request.url}</span>
-        </section>
       </>
     );
   }
