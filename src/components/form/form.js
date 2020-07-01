@@ -1,43 +1,48 @@
 import React from 'react';
+import ReactView from 'react-json-view';
 
 import './form.scss';
 
 class Form extends React.Component {
-
   constructor(props) {
     super(props);
     this.state = {
       url: '',
       method: '',
-      request: {},
-    };
+      request: {}
+    }
   }
 
-  handleSubmit = e => {
+  handleSubmit = async e => {
     e.preventDefault();
 
-    if ( this.state.url && this.state.method ) {
-      let request = {
-        url: this.state.url,
-        method: this.state.method,
-      };
-
-      let url = '';
-      let method = '';
-
-      this.setState({request, url, method});
-      e.target.reset();
-
-    }
-
-    else {
+    if (this.state.url && this.state.method) {
+      try {
+        let raw = await fetch(this.state.url);
+        let data = await raw.json();
+        // console.log('data',data);
+        // let count = data.count || 0; //count the result
+        
+        let head ;
+        raw.headers.forEach(value =>{
+          head = { 'Content-Type': value }
+        })
+        let results = {
+          Headers: head,
+          Response: data
+        }
+        this.props.handler(results);
+      } catch (e) {
+        console.log(e);
+      }
+    } else {
       alert('missing information');
     }
   }
 
   handleChangeURL = e => {
     const url = e.target.value;
-    this.setState({url});
+    this.setState({ url });
   };
 
   handleChangeMethod = e => {
@@ -61,10 +66,6 @@ class Form extends React.Component {
             <span className={this.state.method === 'delete' ? 'active' : ''} id="delete" onClick={this.handleChangeMethod}>DELETE</span>
           </label>
         </form>
-        <section className="results">
-          <span className="method">{this.state.request.method}</span>
-          <span className="url">{this.state.request.url}</span>
-        </section>
       </>
     );
   }
