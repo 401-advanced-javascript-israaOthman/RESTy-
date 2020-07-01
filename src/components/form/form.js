@@ -15,6 +15,7 @@ class Form extends React.Component {
 
   handleSubmit = async e => {
     e.preventDefault();
+    this.props.toggleLoading();
 
     if (this.state.url && this.state.method) {
       try {
@@ -32,6 +33,8 @@ class Form extends React.Component {
           Response: data
         }
         this.props.handler(results);
+        this.props.toggleLoading();
+        
       } catch (e) {
         console.log(e);
       }
