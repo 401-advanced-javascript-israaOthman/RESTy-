@@ -11,15 +11,12 @@ class App extends React.Component {
   constructor(props){
     super(props);
     this.state={
-      count:0,
-      headers:{},
-      results:[]
+      results:{}
     };
   }
 
-  handelForm = (count,headers,results)=>{
-    // let headers={"content-type":"application-json"};
-    this.setState({count,headers,results});
+  handelForm = (results)=>{
+    this.setState({results});
   }
 
   render() {
@@ -27,7 +24,7 @@ class App extends React.Component {
       <React.Fragment>
         <Header />
         <Form handler={this.handelForm}/>
-        <Results count={this.state.count} headers={this.state.headers} results={this.state.results} />
+        <Results results={this.state.results} />
         <Footer />
       </React.Fragment>
     );
