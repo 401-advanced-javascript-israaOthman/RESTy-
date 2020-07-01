@@ -4,7 +4,7 @@ import renderer from 'react-test-renderer';
 // import Adapter from 'enzyme-adapter-react-16';
 // configure({adapter: new Adapter()});
 
-import Header from '../../components/header/index';
+import Header from '../../src/components/header/index';
 
 describe('<Header/>', ()=> {
     it('Is the header exsits ?', () =>{

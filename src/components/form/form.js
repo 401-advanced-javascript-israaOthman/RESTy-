@@ -9,7 +9,8 @@ class Form extends React.Component {
     this.state = {
       url: '',
       method: '',
-      request: {}
+      request: {},
+      body: {}
     }
   }
 
@@ -17,29 +18,67 @@ class Form extends React.Component {
     e.preventDefault();
     this.props.toggleLoading();
 
-    if (this.state.url && this.state.method) {
-      try {
-        let raw = await fetch(this.state.url);
-        let data = await raw.json();
-        // console.log('data',data);
-        // let count = data.count || 0; //count the result
-        
-        let head ;
-        raw.headers.forEach(value =>{
-          head = { 'Content-Type': value }
-        })
-        let results = {
-          Headers: head,
-          Response: data
-        }
-        this.props.handler(results);
-        this.props.toggleLoading();
-        
-      } catch (e) {
-        console.log(e);
+    if (this.state.url) {
+      switch (this.state.method) {
+        case 'get':
+          try {
+            let raw = await fetch(this.state.url);
+            let data = await raw.json();
+            // console.log('data',data);
+            // let count = data.count || 0; //count the result
+
+            let head;
+            raw.headers.forEach(value => {
+              head = { 'Content-Type': value }
+            })
+            let results = {
+              Headers: head,
+              Response: data
+            }
+            this.props.handler(results);
+            this.props.toggleLoading();
+            this.props.setHistory(this.state.method,this.state.url,this.state.body);
+          } catch (e) {
+            console.log(e);
+          }
+          break;
+        case 'post':
+        case 'put':
+          if (this.state.body) {
+            fetch(this.state.url, {
+              method: `${this.state.method}`,
+              mode: 'cors',
+              headers: {
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*'
+              },
+              body: this.state.body
+            })
+              .then(data => data.json()).then(results => {
+                this.props.handler(results);
+            this.props.setHistory(this.state.method,this.state.url,this.state.body);
+
+              })
+          } else {
+            alert('please Enter the body');
+          }
+          break;
+        case 'delete':
+          fetch(this.state.url, {
+            method: `${this.state.method}`,
+            mode: 'cors',
+            headers: {
+              'Content-Type': 'application/json',
+              'Access-Control-Allow-Origin': '*'
+            },
+          })
+            .then(() => {
+              this.props.handler({results:'Deleted ....'});
+            this.props.setHistory(this.state.method,this.state.url,this.state.body);
+
+            })
       }
-    } else {
-      alert('missing information');
+
     }
   }
 
@@ -52,6 +91,17 @@ class Form extends React.Component {
     const method = e.target.id;
     this.setState({ method });
   };
+
+  handleBody = e => {
+    const body = e.target.value;
+    this.setState({ body });
+  }
+
+  //  setHistory =(method,url,body)=>{
+  //   let obj = JSON.stringify({method,url,body});
+
+  //   localStorage.setItem('history' , obj );
+  // }
 
   render() {
     return (
@@ -68,6 +118,8 @@ class Form extends React.Component {
             <span className={this.state.method === 'put' ? 'active' : ''} id="put" onClick={this.handleChangeMethod}>PUT</span>
             <span className={this.state.method === 'delete' ? 'active' : ''} id="delete" onClick={this.handleChangeMethod}>DELETE</span>
           </label>
+          <label> Body :
+          <textarea className="body" onChange={this.handleBody} > </textarea></label>
         </form>
       </>
     );
