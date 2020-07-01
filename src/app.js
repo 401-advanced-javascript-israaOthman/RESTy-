@@ -11,8 +11,14 @@ class App extends React.Component {
   constructor(props){
     super(props);
     this.state={
+      loading:false,
       results:{}
     };
+  }
+
+  toggleLoading = () => {
+    console.log("this.state.loading: ",this.state.loading)
+    this.setState({ loading: !this.state.loading })
   }
 
   handelForm = (results)=>{
@@ -23,8 +29,8 @@ class App extends React.Component {
     return (
       <React.Fragment>
         <Header />
-        <Form handler={this.handelForm}/>
-        <Results results={this.state.results} />
+        <Form toggleLoading={this.toggleLoading} handler={this.handelForm}/>
+        <Results results={this.state.results} loading={this.state.loading} />
         <Footer />
       </React.Fragment>
     );
