@@ -5,8 +5,8 @@ import validateFormData from 'react-jsonschema-form/lib/validate';
 import './history.scss';
 
 const history = () => {
-    let get = getProduts();
-    if(get.length > 0){
+    let get = getStorage();
+    if(get && get.length > 0){
         const result = get.map((val, idx) => {
             return (
                 <li className="mm" key={idx}>
@@ -33,7 +33,7 @@ const history = () => {
 }
 
 
-const getProduts = () => {
+const getStorage = () => {
     let history = localStorage.getItem('history');
     if (history) {
         let result = JSON.parse(history);

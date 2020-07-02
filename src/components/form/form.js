@@ -16,7 +16,7 @@ class Form extends React.Component {
 
   handleSubmit = async e => {
     e.preventDefault();
-    this.props.toggleLoading();
+    this.props.toggleLoading();//true
 
     if (this.state.url) {
       switch (this.state.method) {
@@ -24,8 +24,7 @@ class Form extends React.Component {
           try {
             let raw = await fetch(this.state.url);
             let data = await raw.json();
-            // console.log('data',data);
-            // let count = data.count || 0; //count the result
+
 
             let head;
             raw.headers.forEach(value => {
@@ -36,7 +35,7 @@ class Form extends React.Component {
               Response: data
             }
             this.props.handler(results);
-            this.props.toggleLoading();
+            this.props.toggleLoading();//false
             this.props.setHistory(this.state.method,this.state.url,this.state.body);
           } catch (e) {
             console.log(e);
@@ -55,7 +54,8 @@ class Form extends React.Component {
               body: this.state.body
             })
               .then(data => data.json()).then(results => {
-                this.props.handler(results);
+               this.props.handler(results);
+            this.props.toggleLoading();//false
             this.props.setHistory(this.state.method,this.state.url,this.state.body);
 
               })
@@ -74,6 +74,7 @@ class Form extends React.Component {
           })
             .then(() => {
               this.props.handler({results:'Deleted ....'});
+            this.props.toggleLoading();//false
             this.props.setHistory(this.state.method,this.state.url,this.state.body);
 
             })
@@ -97,11 +98,7 @@ class Form extends React.Component {
     this.setState({ body });
   }
 
-  //  setHistory =(method,url,body)=>{
-  //   let obj = JSON.stringify({method,url,body});
 
-  //   localStorage.setItem('history' , obj );
-  // }
 
   render() {
     return (

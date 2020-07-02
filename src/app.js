@@ -19,7 +19,7 @@ class App extends React.Component {
   }
 
   toggleLoading = () => {
-    console.log("this.state.loading: ",this.state.loading)
+    // console.log("this.state.loading: ",this.state.loading)
     this.setState({ loading: !this.state.loading })
   }
 
@@ -42,12 +42,15 @@ class App extends React.Component {
     return (
      <BrowserRouter>
         <Header />
-        <Route exact path='/' component={Results}>
+        <Route exact path='/'>
           <Form toggleLoading={this.toggleLoading} handler={this.handelForm} setHistory={this.setHistory}/>
+          {/* <IfRenderer condition={comming from his} > */}
+          {/* <Then> */}
           <Results results={this.state.results} loading={this.state.loading} />
+          {/* </Then> */}
         </Route>
         <Route exact path='/history' component={History}>
-          <History history={this.state.history} />
+          {/* <History /> */}
         </Route>
         <Footer />
       </BrowserRouter>
