@@ -6,9 +6,12 @@ import './loader.scss';
 
 const Result = (props) => {
     return (
-        <div className={`loading-${props.loading}  output `} >
+        <>
+        <img src="https://lh3.googleusercontent.com/proxy/4ngyKPVDFRyA9LylGP8K-T-XzH2iZJAVHDccTvayO3REGoGEZTAnA-akIeDNIK5KpdLd0sgltbHKO79mUBA" className={`loading-${props.loading}`}></img>
+        <div className={`loading-${!props.loading}`}  id="output">
             <ReactView src={props.results} />
         </div>
+        </>
     );
 }
 export default Result;
