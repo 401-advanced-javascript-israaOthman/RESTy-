@@ -14,6 +14,7 @@ class App extends React.Component {
     this.state={
       loading:false,
       results:{},
+      history:[]
     };
   }
 
@@ -26,13 +27,23 @@ class App extends React.Component {
     this.setState({results});
   }
 
+  setHistory =(method,url,body)=>{
+
+    let obj = {method,url,body};
+    let history = [...this.state.history,obj];
+    this.setState({
+      history:history
+    })
+    let hisArray = JSON.stringify(this.state.history);
+    localStorage.setItem('history' , hisArray );
+  }
 
   render() {
     return (
      <BrowserRouter>
         <Header />
         <Route exact path='/' component={Results}>
-          <Form toggleLoading={this.toggleLoading} handler={this.handelForm} />
+          <Form toggleLoading={this.toggleLoading} handler={this.handelForm} setHistory={this.setHistory}/>
           <Results results={this.state.results} loading={this.state.loading} />
         </Route>
         <Route exact path='/history' component={History}>
