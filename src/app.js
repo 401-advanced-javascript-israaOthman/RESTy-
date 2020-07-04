@@ -14,7 +14,8 @@ class App extends React.Component {
     this.state={
       loading:false,
       results:{},
-      history:[]
+      history:[],
+      fillForm:{}
     };
   }
 
@@ -38,19 +39,22 @@ class App extends React.Component {
     localStorage.setItem('history' , hisArray );
   }
 
+  filler = (fillForm)=>{
+     this.setState({fillForm})
+     console.log('fillForm',fillForm)
+     console.log('state',this.state.fillForm);
+  }
+
   render() {
     return (
      <BrowserRouter>
         <Header />
         <Route exact path='/'>
-          <Form toggleLoading={this.toggleLoading} handler={this.handelForm} setHistory={this.setHistory}/>
-          {/* <IfRenderer condition={comming from his} > */}
-          {/* <Then> */}
+          <Form toggleLoading={this.toggleLoading} handler={this.handelForm} setHistory={this.setHistory} fillForm={this.state.fillForm}/>
           <Results results={this.state.results} loading={this.state.loading} />
-          {/* </Then> */}
         </Route>
-        <Route exact path='/history' component={History}>
-          {/* <History /> */}
+        <Route exact path='/history'>
+          <History filler={this.filler}/>
         </Route>
         <Footer />
       </BrowserRouter>

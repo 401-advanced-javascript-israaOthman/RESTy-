@@ -14,6 +14,7 @@ class Form extends React.Component {
     }
   }
 
+
   handleSubmit = async e => {
     e.preventDefault();
     this.props.toggleLoading();//true
@@ -98,28 +99,51 @@ class Form extends React.Component {
     this.setState({ body });
   }
 
-
+  
 
   render() {
-    return (
-      <>
-        <form onSubmit={this.handleSubmit}>
-          <label >
-            <span>URL: </span>
-            <input name='url' type='text' onChange={this.handleChangeURL} />
-            <button type="submit">GO!</button>
-          </label>
-          <label className="methods">
-            <span className={this.state.method === 'get' ? 'active' : ''} id="get" onClick={this.handleChangeMethod}>GET</span>
-            <span className={this.state.method === 'post' ? 'active' : ''} id="post" onClick={this.handleChangeMethod}>POST</span>
-            <span className={this.state.method === 'put' ? 'active' : ''} id="put" onClick={this.handleChangeMethod}>PUT</span>
-            <span className={this.state.method === 'delete' ? 'active' : ''} id="delete" onClick={this.handleChangeMethod}>DELETE</span>
-          </label>
-          <label> Body :
-          <textarea className="body" onChange={this.handleBody} > </textarea></label>
-        </form>
-      </>
-    );
+    if(this.props.fillForm){
+      return (
+        <>
+          <form onSubmit={this.handleSubmit}>
+            <label >
+              <span>URL: </span>
+              <input name='url' type='text' onChange={this.handleChangeURL} placeholder={this.props.fillForm.url} />
+              <button type="submit">GO!</button>
+            </label>
+            <label className="methods">
+              <span className={this.state.method === 'get' ? 'active' : ''} id="get" onClick={this.handleChangeMethod}>GET</span>
+              <span className={this.state.method === 'post' ? 'active' : ''} id="post" onClick={this.handleChangeMethod}>POST</span>
+              <span className={this.state.method === 'put' ? 'active' : ''} id="put" onClick={this.handleChangeMethod}>PUT</span>
+              <span className={this.state.method === 'delete' ? 'active' : ''} id="delete" onClick={this.handleChangeMethod}>DELETE</span>
+            </label>
+            <label> Body :
+            <textarea className="body" onChange={this.handleBody} > </textarea></label>
+          </form>
+        </>
+      );
+    }else{
+      return (
+        <>
+          <form onSubmit={this.handleSubmit}>
+            <label >
+              <span>URL: </span>
+              <input name='url' type='text' onChange={this.handleChangeURL} />
+              <button type="submit">GO!</button>
+            </label>
+            <label className="methods">
+              <span className={this.state.method === 'get' ? 'active' : ''} id="get" onClick={this.handleChangeMethod}>GET</span>
+              <span className={this.state.method === 'post' ? 'active' : ''} id="post" onClick={this.handleChangeMethod}>POST</span>
+              <span className={this.state.method === 'put' ? 'active' : ''} id="put" onClick={this.handleChangeMethod}>PUT</span>
+              <span className={this.state.method === 'delete' ? 'active' : ''} id="delete" onClick={this.handleChangeMethod}>DELETE</span>
+            </label>
+            <label> Body :
+            <textarea className="body" onChange={this.handleBody} > </textarea></label>
+          </form>
+        </>
+      );
+    }
+    
   }
 }
 

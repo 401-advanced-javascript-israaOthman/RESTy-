@@ -4,8 +4,17 @@ import { Link, NavLink } from 'react-router-dom';
 import validateFormData from 'react-jsonschema-form/lib/validate';
 import './history.scss';
 
-const history = () => {
+
+const history = (props) => {
     let get = getStorage();
+
+    const handleFiler = (e) =>{
+        let get = getStorage();
+        let fill = get[parseInt(e.target.id)];
+        console.log('fill',fill)
+        props.filler(fill);
+    }
+
     if(get && get.length > 0){
         const result = get.map((val, idx) => {
             return (
@@ -13,10 +22,11 @@ const history = () => {
                     <span className={`method ${val.method}`}>{val.method}</span>
                     <span className="url">{val.url}</span>
                     {/* <span className="body">{val.body ? val.body : '...'}</span> */}
-                     <button><NavLink to='/'>Re-Run</NavLink></button>
+                    <NavLink to='/' id={idx}><button onClick={handleFiler} id={idx}>Re-Run</button></NavLink>
                 </li>
             );
         });
+
         return (
             <div className="list">
                 {result}
@@ -29,8 +39,10 @@ const history = () => {
             </div>
         )
     }
+    
    
 }
+
 
 
 const getStorage = () => {
