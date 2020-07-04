@@ -12,6 +12,8 @@
 
 ## UML 
  ![restyUML](./assets/restyUML.jpeg)
+ ![restyUML](./assets/uml2.jpeg)
+
 
 ## Deployment 
  - [gh-pages](https://401-advanced-javascript-israaothman.github.io/RESTy-/)
