@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactView from 'react-json-view';
-
+import { If, Then, Else } from '../if/if'
 import './form.scss';
 
 class Form extends React.Component {
@@ -18,12 +18,15 @@ class Form extends React.Component {
   handleSubmit = async e => {
     e.preventDefault();
     this.props.toggleLoading();//true
+    let url = this.state.url;
+    let method = this.state.method;
+    let body = this.state.body;
 
-    if (this.state.url) {
-      switch (this.state.method) {
+    if (url) {
+      switch (method) {
         case 'get':
           try {
-            let raw = await fetch(this.state.url);
+            let raw = await fetch(url);
             let data = await raw.json();
 
 
@@ -37,27 +40,27 @@ class Form extends React.Component {
             }
             this.props.handler(results);
             this.props.toggleLoading();//false
-            this.props.setHistory(this.state.method,this.state.url,this.state.body);
+            this.props.setHistory(method,url,body);
           } catch (e) {
             console.log(e);
           }
           break;
         case 'post':
         case 'put':
-          if (this.state.body) {
-            fetch(this.state.url, {
-              method: `${this.state.method}`,
+          if (body) {
+            fetch(url, {
+              method: `${method}`,
               mode: 'cors',
               headers: {
                 'Content-Type': 'application/json',
                 'Access-Control-Allow-Origin': '*'
               },
-              body: this.state.body
+              body: body
             })
               .then(data => data.json()).then(results => {
                this.props.handler(results);
             this.props.toggleLoading();//false
-            this.props.setHistory(this.state.method,this.state.url,this.state.body);
+            this.props.setHistory(method,url,body);
 
               })
           } else {
@@ -65,8 +68,8 @@ class Form extends React.Component {
           }
           break;
         case 'delete':
-          fetch(this.state.url, {
-            method: `${this.state.method}`,
+          fetch(url, {
+            method: `${method}`,
             mode: 'cors',
             headers: {
               'Content-Type': 'application/json',
@@ -76,7 +79,7 @@ class Form extends React.Component {
             .then(() => {
               this.props.handler({results:'Deleted ....'});
             this.props.toggleLoading();//false
-            this.props.setHistory(this.state.method,this.state.url,this.state.body);
+            this.props.setHistory(method,url,body);
 
             })
       }
@@ -102,28 +105,7 @@ class Form extends React.Component {
   
 
   render() {
-    if(this.props.fillForm){
-      return (
-        <>
-          <form onSubmit={this.handleSubmit}>
-            <label >
-              <span>URL: </span>
-              <input name='url' type='text' onChange={this.handleChangeURL} placeholder={this.props.fillForm.url} />
-              <button type="submit">GO!</button>
-            </label>
-            <label className="methods">
-              <span className={this.state.method === 'get' ? 'active' : ''} id="get" onClick={this.handleChangeMethod}>GET</span>
-              <span className={this.state.method === 'post' ? 'active' : ''} id="post" onClick={this.handleChangeMethod}>POST</span>
-              <span className={this.state.method === 'put' ? 'active' : ''} id="put" onClick={this.handleChangeMethod}>PUT</span>
-              <span className={this.state.method === 'delete' ? 'active' : ''} id="delete" onClick={this.handleChangeMethod}>DELETE</span>
-            </label>
-            <label> Body :
-            <textarea className="body" onChange={this.handleBody} > </textarea></label>
-          </form>
-        </>
-      );
-    }else{
-      return (
+    return(
         <>
           <form onSubmit={this.handleSubmit}>
             <label >
@@ -141,9 +123,7 @@ class Form extends React.Component {
             <textarea className="body" onChange={this.handleBody} > </textarea></label>
           </form>
         </>
-      );
-    }
-    
+    );
   }
 }
 

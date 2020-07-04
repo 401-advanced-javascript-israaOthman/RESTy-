@@ -1,16 +1,23 @@
 
 import React from 'react';
 import ReactView from 'react-json-view';
+import { If, Then, Else } from '../if/if'
 import './loader.scss';
 
 
 const Result = (props) => {
     return (
         <>
-        <img src="https://lh3.googleusercontent.com/proxy/4ngyKPVDFRyA9LylGP8K-T-XzH2iZJAVHDccTvayO3REGoGEZTAnA-akIeDNIK5KpdLd0sgltbHKO79mUBA" className={`loading-${props.loading}`}></img>
-        <div className={`loading-${!props.loading}`}  id="output">
-            <ReactView src={props.results} />
-        </div>
+            <If condition={!props.loading}>
+                <Then>
+                    <div id="output">
+                        <ReactView src={props.results} />
+                    </div>
+                </Then>
+                <Else>
+                    <img src="https://thumbs.gfycat.com/SpryNegligibleLeafcutterant-size_restricted.gif"></img>
+                </Else>
+            </If>
         </>
     );
 }
